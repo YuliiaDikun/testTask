@@ -1,17 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+import grails.util.BuildSettings
+import grails.util.Environment
+import org.springframework.boot.logging.logback.ColorConverter
+import org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter
 
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
-    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+import java.nio.charset.StandardCharsets
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wex</pattern>
-        </encoder>
-    </appender>
+conversionRule 'clr', ColorConverter
+conversionRule 'wex', WhitespaceThrowableProxyConverter
 
-    <root level="error">
-        <appender-ref ref="STDOUT" />
-    </root>
-</configuration>
+// See http://logback.qos.ch/manual/groovy.html for details on configuration
+appender('STDOUT', ConsoleAppender) {
+    encoder(PatternLayoutEncoder) {
+        charset = StandardCharsets.UTF_8
+
+        pattern =
+                '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} ' + // Date
+                        '%clr(%5p) ' + // Log level
+                        '%clr(---){faint} %clr([%15.15t]){faint} ' + // Thread
+                        '%clr(%-40.40logger{39}){cyan} %clr(:){faint} ' + // Logger
+                        '%m%n%wex' // Message
+    }
+}
+
+def targetDir = BuildSettings.TARGET_DIR
+if (Environment.isDevelopmentMode() && targetDir != null) {
+    appender("FULL_STACKTRACE", FileAppender) {
+        file = "${targetDir}/stacktrace.log"
+        append = true
+        encoder(PatternLayoutEncoder) {
+            charset = StandardCharsets.UTF_8
+            pattern = "%level %logger - %msg%n"
+        }
+    }
+    logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
+}
+root(ERROR, ['STDOUT'])

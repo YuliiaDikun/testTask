@@ -1,13 +1,13 @@
 buildscript {
     repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.github.node-gradle:gradle-node-plugin:2.2.0"
-        classpath "org.grails.plugins:hibernate5:7.3.0"
-        classpath "org.grails.plugins:views-gradle:2.3.2"
+        classpath "org.grails.plugins:hibernate5:7.0.4"
+        classpath "org.grails.plugins:views-gradle:2.0.2"
     }
 }
 
@@ -22,7 +22,6 @@ apply plugin:"com.github.node-gradle.node"
 apply plugin:"org.grails.plugins.views-json"
 
 repositories {
-    mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
 }
 
@@ -35,41 +34,40 @@ configurations {
 
 dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.grails:grails-core"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.grails:grails-plugin-url-mappings"
+    compile "org.grails:grails-plugin-rest"
+    compile "org.grails:grails-plugin-codecs"
+    compile "org.grails:grails-plugin-interceptors"
+    compile "org.grails:grails-plugin-services"
+    compile "org.grails:grails-plugin-datasource"
+    compile "org.grails:grails-plugin-databinding"
+    compile "org.grails:grails-web-boot"
+    compile "org.grails:grails-logging"
+    compile "org.grails.plugins:cache"
+    compile "org.grails.plugins:async"
+    compile "org.grails.plugins:hibernate5"
+    compile "org.hibernate:hibernate-core:5.4.18.Final"
+    compile "org.grails.plugins:views-json"
+    compile "org.grails.plugins:views-json-templates"
     compileOnly "io.micronaut:micronaut-inject-groovy"
     console "org.grails:grails-console"
-    implementation "org.springframework.boot:spring-boot-starter-logging"
-    implementation "org.springframework.boot:spring-boot-starter-validation"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.grails:grails-core"
-    implementation "org.springframework.boot:spring-boot-starter-actuator"
-    implementation "org.springframework.boot:spring-boot-starter-tomcat"
-    implementation "org.grails:grails-plugin-url-mappings"
-    implementation "org.grails:grails-plugin-rest"
-    implementation "org.grails:grails-plugin-codecs"
-    implementation "org.grails:grails-plugin-interceptors"
-    implementation "org.grails:grails-plugin-services"
-    implementation "org.grails:grails-plugin-datasource"
-    implementation "org.grails:grails-plugin-databinding"
-    implementation "org.grails:grails-web-boot"
-    implementation "org.grails:grails-logging"
-    implementation "org.grails.plugins:cache"
-    implementation "org.grails.plugins:async"
-    implementation "org.grails.plugins:hibernate5"
-    implementation "org.hibernate:hibernate-core:5.6.11.Final"
-    implementation "org.grails.plugins:views-json"
-    implementation "org.grails.plugins:views-json-templates"
     profile "org.grails.profiles:vue"
-    runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
-    runtimeOnly "com.h2database:h2"
-    runtimeOnly "org.apache.tomcat:tomcat-jdbc"
-    runtimeOnly "javax.xml.bind:jaxb-api:2.3.1"
-    testImplementation "io.micronaut:micronaut-inject-groovy"
-    testImplementation "org.grails:grails-gorm-testing-support"
-    testImplementation "org.mockito:mockito-core"
-    testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "org.grails:grails-web-testing-support"
-    testImplementation "org.grails:views-json-testing-support"
-    testImplementation "org.hibernate.validator:hibernate-validator:6.1.7.Final"
+    runtime "org.glassfish.web:el-impl:2.1.2-b03"
+    runtime "com.h2database:h2"
+    runtime "org.apache.tomcat:tomcat-jdbc"
+    runtime "javax.xml.bind:jaxb-api:2.3.1"
+    testCompile "io.micronaut:micronaut-inject-groovy"
+    testCompile "org.grails:grails-gorm-testing-support"
+    testCompile "org.mockito:mockito-core"
+    testCompile "io.micronaut:micronaut-http-client"
+    testCompile "org.grails:grails-web-testing-support"
+    testCompile "org.grails:views-json-testing-support"
+    testCompile "org.hibernate.validator:hibernate-validator:6.0.20.Final"
 }
 
 bootRun {
@@ -88,8 +86,4 @@ tasks.withType(GroovyCompile) {
     configure(groovyOptions) {
         forkOptions.jvmArgs = ['-Xmx1024m']
     }
-}
-
-tasks.withType(Test) {
-    useJUnitPlatform()
 }
