@@ -1,0 +1,31 @@
+plugins {
+    id "com.github.node-gradle.node" version "2.2.0"
+}
+
+node {
+    version = '10.15.0' // https://nodejs.org/en/
+    yarnVersion = '1.13.0' // https://yarnpkg.com/en/
+    download = true
+}
+
+task bootRun(dependsOn: 'serve') {
+    group = 'application'
+    description = 'Run the client app (for use with gradle bootRun -parallel'
+}
+
+task serve(type: YarnTask, dependsOn: 'yarn') {
+    group = 'application'
+    description = 'Run the client app'
+    args = ['run', 'serve']
+}
+
+task build(type: YarnTask, dependsOn: 'yarn') {
+    group = 'build'
+    description = 'Build the client bundle'
+    args = ['run', 'build']
+}
+task lint(type: YarnTask, dependsOn: 'yarn') {
+    group = 'build'
+    description = 'Run eslint'
+    args = ['run', 'lint']
+}
