@@ -1,16 +1,17 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import './assets/css/bootstrap.css'
-import './assets/css/grails.css'
-import './assets/css/main.css'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import vuetify from "./plugins/vuetify";
+import store from "./store";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: "#app",
   router,
   components: { App },
-  template: '<App/>'
-})
+  vuetify,
+  store,
+  template: "<App/>",
+});
